@@ -69,7 +69,7 @@ export default function Home() {
 
   return (
     <div className="calculator-bg">
-      <div className="calculator-glow" />
+      <div className="bg-accent" />
 
       <div className="calculator-card">
         {/* Header */}
