@@ -1,0 +1,425 @@
+@import "tailwindcss";
+
+:root {
+  --font-ui: var(--font-dm-sans), system-ui, sans-serif;
+  --font-display: var(--font-cormorant), Georgia, serif;
+
+  --bg: #000000;
+  --card-bg: rgba(22, 22, 23, 0.85);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #f5f5f7;
+  --text-secondary: #86868b;
+  --text-tertiary: rgba(255, 255, 255, 0.28);
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --accent-glow: rgba(0, 113, 227, 0.25);
+  --plan-active-bg: rgba(0, 113, 227, 0.1);
+  --plan-active-border: rgba(0, 113, 227, 0.35);
+  --green: #32d74b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Page Background ─── */
+
+.calculator-bg {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+.calculator-glow {
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 113, 227, 0.07) 0%, transparent 65%);
+  pointer-events: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ─── Card ─── */
+
+.calculator-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--card-bg);
+  backdrop-filter: blur(48px) saturate(180%);
+  -webkit-backdrop-filter: blur(48px) saturate(180%);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  padding: 36px;
+  box-shadow:
+    0 0 0 0.5px rgba(255, 255, 255, 0.04) inset,
+    0 40px 96px rgba(0, 0, 0, 0.7),
+    0 8px 32px rgba(0, 0, 0, 0.4);
+  animation: cardIn 0.55s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ─── Header ─── */
+
+.calc-header {
+  margin-bottom: 28px;
+}
+
+.calc-logo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.calc-logo-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+.calc-tagline {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+
+/* ─── Billing Toggle ─── */
+
+.billing-toggle-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.billing-toggle {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 100px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 18px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-ui);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.toggle-btn.active {
+  background: rgba(255, 255, 255, 0.09);
+  color: var(--text-primary);
+}
+
+.toggle-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 100px;
+  background: rgba(0, 113, 227, 0.18);
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+/* ─── Plan Grid ─── */
+
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.plan-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 14px 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-ui);
+}
+
+.plan-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.plan-card:active {
+  transform: scale(0.97);
+}
+
+.plan-card--active {
+  background: var(--plan-active-bg);
+  border-color: var(--plan-active-border);
+}
+
+.plan-name {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.plan-card--active .plan-name {
+  color: var(--accent);
+}
+
+.plan-price {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.plan-period {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.plan-desc {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  line-height: 1.4;
+}
+
+/* ─── Quantity ─── */
+
+.quantity-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 28px;
+}
+
+.quantity-label {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.qty-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  color: var(--text-primary);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1;
+  font-family: var(--font-ui);
+  font-weight: 300;
+}
+
+.qty-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.11);
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.qty-btn:active:not(:disabled) {
+  transform: scale(0.91);
+}
+
+.qty-btn:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.qty-value {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  min-width: 28px;
+  text-align: center;
+}
+
+/* ─── Price Display ─── */
+
+.price-display {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.price-main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 3px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.price-currency {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--text-secondary);
+  padding-top: 14px;
+}
+
+.price-number {
+  font-family: var(--font-display);
+  font-size: 80px;
+  font-weight: 300;
+  color: var(--text-primary);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.price-period {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.price-monthly-equiv {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  animation: fadeIn 0.25s ease both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Breakdown ─── */
+
+.breakdown {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 3px 0;
+}
+
+.breakdown-savings {
+  color: var(--green);
+}
+
+.breakdown-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.05);
+  margin: 10px 0;
+}
+
+.breakdown-total {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+/* ─── CTA ─── */
+
+.cta-btn {
+  width: 100%;
+  height: 50px;
+  background: var(--accent);
+  color: white;
+  border-radius: 100px;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: var(--font-ui);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.cta-btn:hover {
+  background: var(--accent-hover);
+  box-shadow: 0 8px 28px var(--accent-glow);
+  transform: scale(1.01);
+}
+
+.cta-btn:active {
+  transform: scale(0.98);
+  box-shadow: none;
+}
+
+.cta-sub {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
