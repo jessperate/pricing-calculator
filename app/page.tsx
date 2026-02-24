@@ -75,9 +75,7 @@ export default function Home() {
         {/* Header */}
         <div className="calc-header">
           <div className="calc-logo">
-            <span className="calc-logo-wordmark">
-              air<span>O</span>ps
-            </span>
+            <span className="calc-logo-wordmark">airOps</span>
             <span className="calc-logo-badge">Pricing</span>
           </div>
           <p className="calc-tagline">Simple, transparent pricing.</p>

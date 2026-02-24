@@ -1,17 +1,84 @@
 @import "tailwindcss";
 
-:root {
-  --font-ui: var(--font-syne), system-ui, sans-serif;
-  --font-display: var(--font-playfair), Georgia, serif;
+/* ─── AirOps Custom Fonts ─── */
 
-  --green: #00f55b;
-  --green-light: #b8ffd9;
-  --black: #0d0d0d;
-  --white: #ffffff;
-  --text-primary: #0d0d0d;
-  --text-secondary: rgba(13, 13, 13, 0.5);
-  --text-tertiary: rgba(13, 13, 13, 0.3);
+@font-face {
+  font-family: 'Serrif VF';
+  src: url('/fonts/SerrifVF.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
 }
+
+@font-face {
+  font-family: 'Saans';
+  src: url('/fonts/Saans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Saans';
+  src: url('/fonts/Saans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Saans';
+  src: url('/fonts/Saans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Saans Mono';
+  src: url('/fonts/SaansMono-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── AirOps Brand Tokens ─── */
+
+:root {
+  --font-serif: 'Serrif VF', Georgia, serif;
+  --font-sans:  'Saans', 'Helvetica Neue', sans-serif;
+  --font-mono:  'Saans Mono', 'DM Mono', monospace;
+
+  /* Brand Greens */
+  --ao-near-black:   #000d05;
+  --ao-forest:       #002910;
+  --ao-mid-green:    #008c44;
+  --ao-interaction:  #00ff64;
+  --ao-super-light:  #CCFFE0;
+  --ao-green-100:    #dfeae3;
+  --ao-off-white:    #F8FFFA;
+  --ao-white:        #ffffff;
+
+  /* Special */
+  --ao-label-yellow: #EEFF8C;
+  --ao-stroke:       #d4e8da;
+
+  /* UI Text */
+  --ao-text-primary:   #09090b;
+  --ao-text-secondary: #676c79;
+  --ao-text-tertiary:  #a5aab6;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+}
+
+/* ─── Base ─── */
 
 * {
   box-sizing: border-box;
@@ -22,9 +89,9 @@
 }
 
 body {
-  background: var(--green);
-  color: var(--text-primary);
-  font-family: var(--font-ui);
+  background: var(--ao-forest);
+  color: var(--ao-text-primary);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -36,164 +103,117 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 20px;
+  padding: var(--space-12) var(--space-6);
   position: relative;
   overflow: hidden;
-  background: linear-gradient(140deg, var(--green) 0%, var(--green-light) 100%);
+  background: var(--ao-forest);
 }
 
-/* halftone dot layer */
+/* dot-grid overlay — brand Canvas pattern on dark */
 .calculator-bg::before {
   content: "";
   position: absolute;
   inset: 0;
   background-image: radial-gradient(
-    circle,
-    rgba(13, 13, 13, 0.12) 1.5px,
-    transparent 1.5px
+    rgba(0, 255, 100, 0.09) 1px,
+    transparent 1px
   );
-  background-size: 11px 11px;
+  background-size: 24px 24px;
   pointer-events: none;
-  z-index: 0;
 }
 
-/* grain noise layer */
-.calculator-bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.04;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ─── Geometric asymmetry accent behind card ─── */
+/* ─── Geometric accent (SKILL.md: spatial asymmetry) ─── */
 
 .bg-accent {
   position: absolute;
   width: 480px;
   height: 580px;
-  border: 1.5px solid rgba(13, 13, 13, 0.1);
-  border-radius: 20px;
-  transform: rotate(-4deg) translate(-18px, 28px);
+  border: 1px solid rgba(0, 255, 100, 0.1);
+  border-radius: 0;
+  transform: rotate(-3deg) translate(-20px, 28px);
   pointer-events: none;
-  z-index: 0;
 }
 
-/* ─── Card ─── */
+/* ─── Card — AirOps card spec: sharp corners, #d4e8da border ─── */
 
 .calculator-card {
   width: 100%;
   max-width: 460px;
-  background: var(--white);
-  border: 2px solid var(--black);
-  border-radius: 16px;
-  padding: 36px;
+  background: var(--ao-white);
+  border: 1px solid var(--ao-stroke);
+  border-radius: 0;
+  padding: var(--space-8);
   position: relative;
   z-index: 1;
-  box-shadow: 7px 7px 0px var(--black);
   animation: cardIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes cardIn {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── Staggered child reveals ─── */
+/* ─── Staggered waterfall reveals (SKILL.md: motion) ─── */
 
 @keyframes revealUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.calc-header {
-  animation: revealUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
-}
-
-.billing-toggle-wrap {
-  animation: revealUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
-}
-
-.plan-grid {
-  animation: revealUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.26s both;
-}
-
-.quantity-row {
-  animation: revealUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.34s both;
-}
-
-.price-display {
-  animation: revealUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.42s both;
-}
-
-.breakdown {
-  animation: revealUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both;
-}
-
-.cta-btn {
-  animation: revealUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.58s both;
-}
-
-.cta-sub {
-  animation: revealUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.63s both;
-}
+.calc-header         { animation: revealUp 0.5s cubic-bezier(0.22,1,0.36,1) 0.10s both; }
+.billing-toggle-wrap { animation: revealUp 0.5s cubic-bezier(0.22,1,0.36,1) 0.18s both; }
+.plan-grid           { animation: revealUp 0.5s cubic-bezier(0.22,1,0.36,1) 0.26s both; }
+.quantity-row        { animation: revealUp 0.5s cubic-bezier(0.22,1,0.36,1) 0.34s both; }
+.price-display       { animation: revealUp 0.55s cubic-bezier(0.22,1,0.36,1) 0.42s both; }
+.breakdown           { animation: revealUp 0.5s cubic-bezier(0.22,1,0.36,1) 0.50s both; }
+.cta-btn             { animation: revealUp 0.5s cubic-bezier(0.22,1,0.36,1) 0.58s both; }
+.cta-sub             { animation: revealUp 0.4s cubic-bezier(0.22,1,0.36,1) 0.63s both; }
 
 /* ─── Header ─── */
 
 .calc-header {
-  margin-bottom: 28px;
+  margin-bottom: var(--space-8);
 }
 
 .calc-logo {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
 }
 
+/* AirOps wordmark — Saans Bold */
 .calc-logo-wordmark {
-  font-family: var(--font-ui);
-  font-size: 17px;
+  font-family: var(--font-sans);
+  font-size: 16px;
   font-weight: 700;
-  color: var(--black);
-  letter-spacing: -0.04em;
+  color: var(--ao-near-black);
+  letter-spacing: -0.03em;
 }
 
+/* Brand pill — #EEFF8C, sharp corners, Saans Mono all-caps */
 .calc-logo-badge {
   display: inline-flex;
   align-items: center;
-  padding: 3px 10px;
-  background: var(--black);
-  color: var(--green);
+  padding: 4px 10px;
+  background: var(--ao-label-yellow);
+  border: 1px solid #d4e87a;
+  border-radius: 0;
+  font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 700;
-  font-family: var(--font-ui);
-  letter-spacing: 0.06em;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  border-radius: 4px;
+  color: var(--ao-near-black);
 }
 
 .calc-tagline {
-  font-family: var(--font-display);
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--black);
-  letter-spacing: -0.03em;
-  line-height: 1.15;
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--ao-near-black);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 
 /* ─── Billing Toggle ─── */
@@ -201,14 +221,14 @@ body {
 .billing-toggle-wrap {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: var(--space-6);
 }
 
 .billing-toggle {
   display: inline-flex;
-  background: rgba(13, 13, 13, 0.05);
-  border: 1.5px solid rgba(13, 13, 13, 0.13);
-  border-radius: 100px;
+  background: var(--ao-off-white);
+  border: 1px solid var(--ao-stroke);
+  border-radius: 0;
   padding: 3px;
   gap: 2px;
 }
@@ -216,31 +236,34 @@ body {
 .toggle-btn {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-2);
   padding: 6px 18px;
-  border-radius: 100px;
+  border-radius: 0;
   font-size: 13px;
-  font-weight: 600;
-  font-family: var(--font-ui);
-  color: var(--text-secondary);
+  font-weight: 500;
+  font-family: var(--font-sans);
+  color: var(--ao-text-secondary);
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: all 0.15s ease;
   white-space: nowrap;
 }
 
 .toggle-btn.active {
-  background: var(--black);
-  color: var(--green);
+  background: var(--ao-near-black);
+  color: var(--ao-interaction);
 }
 
+/* Brand pill label on toggle */
 .toggle-badge {
+  font-family: var(--font-mono);
   font-size: 10px;
-  font-weight: 700;
-  padding: 1px 6px;
-  border-radius: 100px;
-  background: var(--green);
-  color: var(--black);
-  letter-spacing: 0.02em;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 0;
+  background: var(--ao-label-yellow);
+  color: var(--ao-near-black);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 /* ─── Plan Grid ─── */
@@ -248,91 +271,89 @@ body {
 .plan-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
 }
 
 .plan-card {
-  background: transparent;
-  border: 1.5px solid rgba(13, 13, 13, 0.14);
-  border-radius: 10px;
-  padding: 14px 12px;
+  background: var(--ao-white);
+  border: 1px solid var(--ao-stroke);
+  border-radius: 0;
+  padding: var(--space-4) var(--space-3);
   text-align: left;
   cursor: pointer;
-  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
-    border-color 0.18s ease, background 0.18s ease,
-    box-shadow 0.18s ease;
-  font-family: var(--font-ui);
+  font-family: var(--font-sans);
+  transition: border-color 0.15s ease, background 0.15s ease,
+    transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.15s ease;
 }
 
 .plan-card:hover {
-  border-color: rgba(13, 13, 13, 0.3);
-  background: rgba(13, 13, 13, 0.03);
-  transform: translateY(-3px) rotate(0.4deg);
-  box-shadow: 3px 3px 0px rgba(13, 13, 13, 0.12);
+  border-color: var(--ao-mid-green);
+  background: var(--ao-off-white);
+  transform: translateY(-2px);
 }
 
 .plan-card:active {
-  transform: translateY(0) rotate(0deg) scale(0.97);
-  box-shadow: none;
+  transform: translateY(0) scale(0.98);
 }
 
 .plan-card--active {
-  background: var(--black);
-  border-color: var(--black);
+  background: var(--ao-near-black);
+  border-color: var(--ao-near-black);
   transform: none;
-  box-shadow: 3px 3px 0px rgba(13, 13, 13, 0.35);
 }
 
 .plan-card--active:hover {
-  transform: translateY(-2px) rotate(0.3deg);
-  box-shadow: 4px 5px 0px rgba(13, 13, 13, 0.35);
+  transform: translateY(-2px);
 }
 
+/* Label — Saans Mono, all-caps */
 .plan-name {
+  font-family: var(--font-mono);
   font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
+  color: var(--ao-text-secondary);
+  margin-bottom: var(--space-2);
 }
 
 .plan-card--active .plan-name {
-  color: var(--green);
+  color: var(--ao-interaction);
 }
 
 .plan-price {
   font-size: 20px;
   font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: -0.03em;
+  color: var(--ao-text-primary);
+  letter-spacing: -0.02em;
   line-height: 1;
   margin-bottom: 5px;
 }
 
 .plan-card--active .plan-price {
-  color: var(--white);
+  color: var(--ao-white);
 }
 
 .plan-period {
   font-size: 11px;
   font-weight: 400;
-  color: var(--text-secondary);
+  color: var(--ao-text-secondary);
 }
 
 .plan-card--active .plan-period {
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .plan-desc {
   font-size: 10px;
-  color: var(--text-tertiary);
+  color: var(--ao-text-tertiary);
   line-height: 1.4;
 }
 
 .plan-card--active .plan-desc {
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.3);
 }
 
 /* ─── Quantity ─── */
@@ -341,62 +362,64 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 0;
-  border-top: 1.5px solid rgba(13, 13, 13, 0.09);
-  border-bottom: 1.5px solid rgba(13, 13, 13, 0.09);
-  margin-bottom: 28px;
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--ao-green-100);
+  border-bottom: 1px solid var(--ao-green-100);
+  margin-bottom: var(--space-8);
 }
 
 .quantity-label {
-  font-size: 13px;
+  font-family: var(--font-mono);
+  font-size: 11px;
   font-weight: 500;
-  color: var(--text-secondary);
-  letter-spacing: 0.01em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ao-text-secondary);
 }
 
 .quantity-control {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: var(--space-4);
 }
 
 .qty-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: transparent;
-  border: 1.5px solid rgba(13, 13, 13, 0.18) !important;
-  color: var(--black);
-  font-size: 18px;
+  width: 28px;
+  height: 28px;
+  border-radius: 0;
+  background: var(--ao-off-white);
+  border: 1px solid var(--ao-stroke) !important;
+  color: var(--ao-near-black);
+  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
-  font-family: var(--font-ui);
-  font-weight: 300;
+  font-family: var(--font-sans);
 }
 
 .qty-btn:hover:not(:disabled) {
-  background: var(--black);
-  border-color: var(--black) !important;
-  color: var(--green);
-  transform: scale(1.1);
+  background: var(--ao-near-black);
+  border-color: var(--ao-near-black) !important;
+  color: var(--ao-interaction);
+  transform: scale(1.08);
 }
 
 .qty-btn:active:not(:disabled) {
-  transform: scale(0.9);
+  transform: scale(0.93);
 }
 
 .qty-btn:disabled {
-  opacity: 0.18;
+  opacity: 0.2;
   cursor: default;
 }
 
 .qty-value {
+  font-family: var(--font-sans);
   font-size: 16px;
   font-weight: 700;
-  color: var(--black);
+  color: var(--ao-near-black);
   min-width: 28px;
   text-align: center;
 }
@@ -405,132 +428,131 @@ body {
 
 .price-display {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
 }
 
 .price-main {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  gap: 3px;
+  gap: 2px;
   line-height: 1;
-  margin-bottom: 6px;
+  margin-bottom: var(--space-2);
 }
 
+/* Serrif VF for the display number — brand spec */
 .price-currency {
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   font-size: 28px;
-  font-weight: 700;
-  color: var(--text-secondary);
+  font-weight: 400;
+  color: var(--ao-text-secondary);
   padding-top: 14px;
+  letter-spacing: -0.02em;
 }
 
 .price-number {
-  font-family: var(--font-display);
-  font-size: 88px;
-  font-weight: 800;
-  color: var(--black);
-  letter-spacing: -0.04em;
+  font-family: var(--font-serif);
+  font-size: 96px;
+  font-weight: 400;
+  color: var(--ao-near-black);
+  letter-spacing: -0.02em;
   line-height: 1;
 }
 
+/* Saans Mono for period label */
 .price-period {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
+  color: var(--ao-text-secondary);
+  margin-bottom: var(--space-2);
 }
 
 .price-monthly-equiv {
   font-size: 12px;
-  color: var(--text-tertiary);
-  animation: fadeIn 0.22s ease both;
+  color: var(--ao-text-tertiary);
+  font-family: var(--font-mono);
+  animation: fadeIn 0.2s ease both;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ─── Breakdown ─── */
 
 .breakdown {
-  border-top: 1.5px solid rgba(13, 13, 13, 0.09);
-  padding-top: 16px;
-  margin-bottom: 24px;
+  border-top: 1px solid var(--ao-green-100);
+  padding-top: var(--space-4);
+  margin-bottom: var(--space-6);
 }
 
 .breakdown-row {
   display: flex;
   justify-content: space-between;
   font-size: 13px;
-  font-weight: 500;
-  color: var(--text-secondary);
+  font-weight: 400;
+  color: var(--ao-text-secondary);
   padding: 3px 0;
+  font-family: var(--font-sans);
 }
 
 .breakdown-savings {
-  color: #007a30;
-  font-weight: 600;
+  color: var(--ao-mid-green);
+  font-weight: 500;
 }
 
 .breakdown-divider {
-  height: 1.5px;
-  background: rgba(13, 13, 13, 0.07);
-  margin: 10px 0;
+  height: 1px;
+  background: var(--ao-green-100);
+  margin: var(--space-3) 0;
 }
 
 .breakdown-total {
   font-weight: 700;
   font-size: 14px;
-  color: var(--black);
+  color: var(--ao-near-black);
 }
 
-/* ─── CTA ─── */
+/* ─── CTA — Primary button: #00ff64, pill shape (brand spec) ─── */
 
 .cta-btn {
   width: 100%;
-  height: 50px;
-  background: var(--black);
-  color: var(--green);
-  border-radius: 100px;
-  font-size: 14px;
+  height: 52px;
+  background: var(--ao-interaction);
+  color: var(--ao-forest);
+  border-radius: 58px;
+  font-size: 16px;
   font-weight: 700;
-  font-family: var(--font-ui);
+  font-family: var(--font-sans);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-2);
   cursor: pointer;
-  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.18s ease;
-  margin-bottom: 12px;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  transition: background 0.15s ease, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  margin-bottom: var(--space-3);
 }
 
 .cta-btn:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0px rgba(13, 13, 13, 0.25);
+  background: #00cc50;
+  transform: scale(1.015);
 }
 
 .cta-btn:active {
-  transform: translate(0, 0);
-  box-shadow: none;
+  transform: scale(0.98);
+  background: var(--ao-interaction);
 }
 
 .cta-sub {
   text-align: center;
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
-  color: var(--text-tertiary);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ao-text-tertiary);
 }
