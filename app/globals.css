@@ -776,6 +776,124 @@ body {
   color: var(--ao-text-tertiary);
 }
 
+/* ─── Competitor Table ─── */
+
+.comp-section {
+  border: 1px solid var(--ao-stroke);
+  margin-bottom: var(--space-6);
+}
+
+.comp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--ao-stroke);
+  background: var(--ao-off-white);
+}
+
+.comp-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ao-text-secondary);
+}
+
+.comp-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  background: var(--ao-label-yellow);
+  border: 1px solid #d4e87a;
+  color: var(--ao-near-black);
+}
+
+.comp-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.comp-row {
+  display: grid;
+  grid-template-columns: 28px 1fr 80px 36px;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--ao-green-100);
+}
+
+.comp-row:last-child {
+  border-bottom: none;
+}
+
+.comp-row--you {
+  background: var(--ao-label-yellow);
+}
+
+.comp-rank {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--ao-text-tertiary);
+  letter-spacing: -0.02em;
+}
+
+.comp-row--you .comp-rank {
+  color: var(--ao-near-black);
+  font-weight: 700;
+}
+
+.comp-domain {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ao-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.comp-row--you .comp-domain {
+  font-weight: 700;
+  color: var(--ao-near-black);
+}
+
+.comp-bar-wrap {
+  height: 4px;
+  background: var(--ao-green-100);
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.comp-bar {
+  height: 100%;
+  background: var(--ao-mid-green);
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.comp-bar--you {
+  background: var(--ao-near-black);
+}
+
+.comp-pct {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ao-text-secondary);
+  text-align: right;
+  letter-spacing: 0.02em;
+}
+
+.comp-row--you .comp-pct {
+  color: var(--ao-near-black);
+  font-weight: 700;
+}
+
 /* ─── Opportunity List ─── */
 
 .opp-list {

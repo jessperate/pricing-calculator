@@ -31,6 +31,57 @@ function hashStr(s: string): number {
   return Math.abs(h);
 }
 
+const KNOWN_COMPETITORS: Record<string, { domain: string; citation: number }[]> = {
+  "airops.com": [
+    { domain: "jasper.ai",       citation: 41 },
+    { domain: "clearscope.io",   citation: 36 },
+    { domain: "surfer.io",       citation: 29 },
+    { domain: "marketmuse.com",  citation: 17 },
+    { domain: "frase.io",        citation: 11 },
+  ],
+  "hubspot.com": [
+    { domain: "salesforce.com",      citation: 58 },
+    { domain: "marketo.com",         citation: 44 },
+    { domain: "activecampaign.com",  citation: 31 },
+    { domain: "mailchimp.com",       citation: 22 },
+    { domain: "pardot.com",          citation: 14 },
+  ],
+  "salesforce.com": [
+    { domain: "hubspot.com",         citation: 52 },
+    { domain: "microsoftdynamics.com", citation: 43 },
+    { domain: "zoho.com",            citation: 27 },
+    { domain: "sap.com",             citation: 19 },
+    { domain: "oracle.com",          citation: 13 },
+  ],
+};
+
+function getCompetitors(domain: string, userCitation: number) {
+  const known = KNOWN_COMPETITORS[domain];
+  if (known) {
+    const all = [...known, { domain, citation: userCitation }]
+      .sort((a, b) => b.citation - a.citation);
+    return all.map((c, i) => ({ ...c, rank: i + 1, isUser: c.domain === domain }));
+  }
+
+  // Generic competitors for unknown domains
+  const h = hashStr(domain);
+  const generic = [
+    `competitor-${String.fromCharCode(65 + (h % 8))}.com`,
+    `rival-${String.fromCharCode(65 + ((h >> 4) % 8))}.io`,
+    `${domain.split(".")[0]}-alt.com`,
+    `best${domain.split(".")[0]}.com`,
+    `top${domain.split(".")[0]}.io`,
+  ].map((d, i) => ({
+    domain: d,
+    citation: Math.max(userCitation + 5 + i * 4, 10) + ((h >> (i * 3)) % 15),
+  }));
+
+  const all = [...generic, { domain, citation: userCitation }]
+    .sort((a, b) => b.citation - a.citation)
+    .slice(0, 6);
+  return all.map((c, i) => ({ ...c, rank: i + 1, isUser: c.domain === domain }));
+}
+
 function getReport(domain: string) {
   const h = hashStr(domain);
   const pages = 180 + (h % 820);
@@ -38,41 +89,17 @@ function getReport(domain: string) {
   const gaps = 14 + (h % 48);
   const trafficLost = 7000 + (h % 43000);
   const citationRate = 6 + (h % 18);
+  const competitors = getCompetitors(domain, citationRate);
 
   const opportunityItems = [
-    {
-      label: "Pages not cited in AI answers",
-      count: missingAI,
-      tag: "HIGH",
-      tagStyle: "tag-high",
-    },
-    {
-      label: "Questions competitors answer, you don't",
-      count: 10 + ((h >> 2) % 38),
-      tag: "HIGH",
-      tagStyle: "tag-high",
-    },
-    {
-      label: "Top-of-funnel content gaps",
-      count: 8 + ((h >> 6) % 28),
-      tag: "MED",
-      tagStyle: "tag-med",
-    },
-    {
-      label: "Product comparison pages needed",
-      count: 4 + ((h >> 8) % 14),
-      tag: "MED",
-      tagStyle: "tag-med",
-    },
-    {
-      label: "How-to guides for your category",
-      count: 5 + ((h >> 10) % 18),
-      tag: "LOW",
-      tagStyle: "tag-low",
-    },
+    { label: "Pages not cited in AI answers",         count: missingAI,              tag: "HIGH", tagStyle: "tag-high" },
+    { label: "Questions competitors answer, you don't", count: 10 + ((h >> 2) % 38), tag: "HIGH", tagStyle: "tag-high" },
+    { label: "Top-of-funnel content gaps",            count: 8 + ((h >> 6) % 28),    tag: "MED",  tagStyle: "tag-med"  },
+    { label: "Product comparison pages needed",       count: 4 + ((h >> 8) % 14),    tag: "MED",  tagStyle: "tag-med"  },
+    { label: "How-to guides for your category",       count: 5 + ((h >> 10) % 18),   tag: "LOW",  tagStyle: "tag-low"  },
   ];
 
-  return { pages, missingAI, gaps, trafficLost, citationRate, opportunityItems };
+  return { pages, missingAI, gaps, trafficLost, citationRate, competitors, opportunityItems };
 }
 
 function useAnimatedNumber(target: number) {
@@ -247,6 +274,32 @@ export default function Home() {
               <div className="stat-card">
                 <div className="stat-value">{animatedTraffic.toLocaleString()}</div>
                 <div className="stat-label">Sessions / mo at risk</div>
+              </div>
+            </div>
+
+            {/* Competitor ranking */}
+            <div className="comp-section">
+              <div className="comp-header">
+                <span className="comp-title">AI visibility — competitor ranking</span>
+                <span className="comp-badge">Est.</span>
+              </div>
+              <div className="comp-table">
+                {report.competitors.map((c) => {
+                  const maxCitation = report.competitors[0].citation;
+                  return (
+                    <div key={c.domain} className={`comp-row${c.isUser ? " comp-row--you" : ""}`}>
+                      <span className="comp-rank">#{c.rank}</span>
+                      <span className="comp-domain">{c.isUser ? `${c.domain} ← you` : c.domain}</span>
+                      <div className="comp-bar-wrap">
+                        <div
+                          className={`comp-bar${c.isUser ? " comp-bar--you" : ""}`}
+                          style={{ width: `${(c.citation / maxCitation) * 100}%` }}
+                        />
+                      </div>
+                      <span className="comp-pct">{c.citation}%</span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
